@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="TaskPaneApp">
+    <Id>8b6e7d43-2fa6-4a3a-aa38-c05827625b3e</Id>
+    <Version>1.0.0.0</Version>
+    <ProviderName>Microsoft</ProviderName>
+    <DefaultLocale>en-US</DefaultLocale>
+    <DisplayName DefaultValue="Web Scraper" />
+    <Description DefaultValue="Simple web-scraping app integrated with excel."/>
+    <Capabilities>
+        <Capability Name="Workbook" />
+    </Capabilities>
+    <DefaultSettings>
+        <SourceLocation DefaultValue="\\dhqshareddata\data\Supply_Chain\Analytics_and_CI\Addins\index.html" />
+    </DefaultSettings>
+    <Permissions>ReadWriteDocument</Permissions>
+</OfficeApp>

@@ -26,7 +26,9 @@ var app = (function () {
         app.showNotification = function (header, text) {
             $('#notification-message-header').text(header);
             $('#notification-message-body').text(text);
-            $('#notification-message').slideDown('fast');
+            setTimeout(function () {
+                $('#notification-message').hide();
+            }, 3000)
         };
     };
 

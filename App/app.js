@@ -22,29 +22,38 @@
     */
 
     var scrape = function getAllPageLinks() {
-        var inputElement = $('#uri-input');
-        var outputRegion = $('#scrape-output');
-        var rawUrl = inputElement.val();
+        Excel.run(function (context) {
+            
 
-        var encodedUrl = encodeURIComponent(encodeURIComponent(rawUrl));
-        var fullScrapeUrl = "https://simplescraper.herokuapp.com/getAllPageLinks/true/" + encodedUrl;
+            var inputElement = $('#uri-input');
+            var outputRegion = $('#scrape-output');
+            var rawUrl = inputElement.val();
 
-        $.ajax({
-            url: fullScrapeUrl,
-            type: "GET",
-            cache: false,
-            contentType: "application/json",
-            success: function (response) {
-                outputRegion.text(JSON.stringify(response));
-                console.log(response);
-            },
-            error: function (response) {
-                app.showNotification("Error", response);
-                console.log(response);
-            }
+            var encodedUrl = encodeURIComponent(encodeURIComponent(rawUrl));
+            var fullScrapeUrl = "https://simplescraper.herokuapp.com/getAllPageLinks/true/" + encodedUrl;
+            var testUrl = "http://devora57.westfarm.com:9502/analytics/saw.dll?Go&Path=/users/bisc_user/testAnalysis&Format=csv&NQUser=bisc_user&NQPassword=Summer2017";
+
+            $.ajax({
+                url: testUrl,
+                type: "GET",
+                cache: false,
+                contentType: "application/json",
+                success: function (response) {
+                    outputRegion.text(JSON.stringify(response));
+                    console.log(response);
+                },
+                error: function (response) {
+                    app.showNotification("Error", response);
+                    console.log(response);
+                }
+            });
+
+            inputElement.val('');
+        }).then(function () {
+
+        }).catch(function () {
+
         });
-
-        inputElement.val('');
     }
 
 })();

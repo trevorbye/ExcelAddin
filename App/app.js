@@ -4,6 +4,7 @@
 (function () {
     "use strict";
 
+    /*
     Office.initialize = function (reason) {
         $(document).ready(function () {
             app.initialize();
@@ -11,15 +12,36 @@
             $('#get-all-page-links').click(scrape);
         });
     };
+    */
+
+    var testUrl = "http://devora57.westfarm.com:9502/analytics/saw.dll?Go&Path=/users/bisc_user/testAnalysis&Format=csv&NQUser=bisc_user&NQPassword=Summer2017";
+
 
     //test function for non-Office environment build
-    /*
+
     $(document).ready(function () {
         app.initialize();
 
-        $('#get-all-page-links').click(scrape);
+        $('#get-all-page-links').click(testScrape());
     });
-    */
+
+
+    var testScrape = function () {
+        $.ajax({
+            url: testUrl,
+            type: "GET",
+            cache: false,
+            contentType: "application/json",
+            success: function (response) {
+                outputRegion.text(JSON.stringify(response));
+                console.log(response);
+            },
+            error: function (response) {
+                app.showNotification("Error", response);
+                console.log(response);
+            }
+        });
+    };
 
     var scrape = function getAllPageLinks() {
         Excel.run(function (context) {
@@ -31,10 +53,9 @@
 
             var encodedUrl = encodeURIComponent(encodeURIComponent(rawUrl));
             var fullScrapeUrl = "https://simplescraper.herokuapp.com/getAllPageLinks/true/" + encodedUrl;
-            var testUrl = "http://devora57.westfarm.com:9502/analytics/saw.dll?Go&Path=/users/bisc_user/testAnalysis&Format=csv&NQUser=bisc_user&NQPassword=Summer2017";
 
             $.ajax({
-                url: testUrl,
+                url: fullScrapeUrl,
                 type: "GET",
                 cache: false,
                 contentType: "application/json",

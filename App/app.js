@@ -4,76 +4,68 @@
 (function () {
     "use strict";
 
-    /*
+
     Office.initialize = function (reason) {
         $(document).ready(function () {
             app.initialize();
 
-            $('#get-all-page-links').click(scrape);
+            $('#get-all-page-links').click(test);
         });
     };
-    */
-
-    var testUrl = "http://devora57.westfarm.com:9502/analytics/saw.dll?Go&Path=/users/bisc_user/testAnalysis&Format=csv&NQUser=bisc_user&NQPassword=Summer2017";
-
 
     //test function for non-Office environment build
-
+    /*
     $(document).ready(function () {
         app.initialize();
 
-        $('#get-all-page-links').click(testScrape());
+        $('#get-all-page-links').click(scrape());
     });
+    */
 
+    var test = function testAlgorithm() {
+        Excel.run(function (ctx) {
 
-    var testScrape = function () {
-        $.ajax({
-            url: testUrl,
-            type: "GET",
-            cache: false,
-            contentType: "application/json",
-            success: function (response) {
-                outputRegion.text(JSON.stringify(response));
-                console.log(response);
-            },
-            error: function (response) {
-                app.showNotification("Error", response);
-                console.log(response);
-            }
-        });
-    };
-
-    var scrape = function getAllPageLinks() {
-        Excel.run(function (context) {
-            
-
+            /*
+            //reference code
             var inputElement = $('#uri-input');
             var outputRegion = $('#scrape-output');
+            outputRegion.text("foobar");
             var rawUrl = inputElement.val();
+            inputElement.val('');
+            */
 
-            var encodedUrl = encodeURIComponent(encodeURIComponent(rawUrl));
-            var fullScrapeUrl = "https://simplescraper.herokuapp.com/getAllPageLinks/true/" + encodedUrl;
+            /*
+            //use this to reference worksheet by name
+            ...worksheets.getItem("Sheet1");
+            */
+            var activeSheet = ctx.workbook.worksheets.getActiveWorksheet();
 
-            $.ajax({
-                url: fullScrapeUrl,
-                type: "GET",
-                cache: false,
-                contentType: "application/json",
-                success: function (response) {
-                    outputRegion.text(JSON.stringify(response));
-                    console.log(response);
-                },
-                error: function (response) {
-                    app.showNotification("Error", response);
-                    console.log(response);
+            var rangeAddress = "A:A";
+            var usedRange = activeSheet.getRange(rangeAddress).getUsedRange();
+            usedRange.load("rowIndex, rowCount, values");
+
+            return ctx.sync().then(() => {
+                var clonedRange = usedRange;
+                var rows = usedRange.rowCount;
+
+                for (var i = 0; i < rows; i++) {
+                    var cellRef = clonedRange.getCell(i, 1);
+                    var currentVal = cellRef.values;
+
+                    if (currentVal > 100) {
+                        cellRef.values = "too high";
+                    }
                 }
+
+                ctx.workbook.worksheets.getActiveWorksheet().getCell(1, 2).getResizedRange(rows - 1, 0).values = clonedRange.values;
+
             });
 
-            inputElement.val('');
         }).then(function () {
-
-        }).catch(function () {
-
+            app.showNotification("Success");
+            console.log("success test");
+        }).catch(function (error) {
+            app.showNotification("Catch-block: ", error);
         });
     }
 
